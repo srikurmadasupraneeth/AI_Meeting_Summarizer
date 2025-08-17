@@ -4,12 +4,19 @@ import dotenv from "dotenv";
 import fetch from "node-fetch";
 import nodemailer from "nodemailer";
 import { marked } from "marked";
+import path from "path";
+import { fileURLToPath } from "url";
 
+// Load environment variables
 dotenv.config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Set up __dirname (for ES modules)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // --- AI Config ---
 const USE_GROQ = process.env.USE_GROQ === "1";
@@ -23,13 +30,14 @@ const API_URL = USE_GROQ
   ? "https://api.groq.com/openai/v1/chat/completions"
   : "https://api.openai.com/v1/chat/completions";
 
-// SMTP Config
+// --- SMTP Config ---
 const SMTP_HOST = process.env.SMTP_HOST || "";
 const SMTP_PORT = process.env.SMTP_PORT ? parseInt(process.env.SMTP_PORT) : 587;
 const SMTP_USER = process.env.SMTP_USER || "";
 const SMTP_PASS = process.env.SMTP_PASS || "";
 const SMTP_FROM = process.env.SMTP_FROM || SMTP_USER || "no-reply@example.com";
 
+// --- AI Summarizer ---
 async function summarizeWithAI(
   transcript,
   instruction = "Provide a concise bullet-point summary and list action items."
@@ -58,7 +66,7 @@ async function summarizeWithAI(
   return data.choices?.[0]?.message?.content || "";
 }
 
-// Routes
+// --- Route: Summarize Transcript ---
 app.post("/api/summarize", async (req, res) => {
   try {
     const { transcript, instruction } = req.body || {};
@@ -76,6 +84,7 @@ app.post("/api/summarize", async (req, res) => {
   }
 });
 
+// --- Route: Send Email ---
 app.post("/api/email", async (req, res) => {
   try {
     const { recipients, subject, body } = req.body || {};
@@ -106,8 +115,16 @@ app.post("/api/email", async (req, res) => {
   }
 });
 
-// The Vercel handler
-export default (req, res) => {
-  req.url = req.url.replace(/^\/api\//, "/"); // a rewrite to handle Vercel's path structure
-  app(req, res);
-};
+// --- Serve static frontend files ---
+app.use(express.static(path.join(__dirname, "..", "public")));
+
+// --- Serve index.html at root ---
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "public", "index.html"));
+});
+
+// --- Start the server ---
+const PORT = process.env.PORT || 8000;
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
