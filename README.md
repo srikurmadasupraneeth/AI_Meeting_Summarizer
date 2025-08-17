@@ -102,6 +102,13 @@ Follow these steps to set up and run the application locally.
 The application will be accessible at `http://localhost:8000`.
 
 ## 📸 Screenshots
+<img width="1470" height="956" alt="Screenshot 2025-08-17 at 7 52 23 AM" src="https://github.com/user-attachments/assets/a299368b-b1c4-4249-99cf-4de45534f2cf" />
+<img width="1470" height="956" alt="Screenshot 2025-08-17 at 7 52 33 AM" src="https://github.com/user-attachments/assets/83507880-24a9-46c8-881b-5febc0f05a18" />
+<img width="1470" height="956" alt="Screenshot 2025-08-17 at 7 52 51 AM" src="https://github.com/user-attachments/assets/f81305dd-b0dc-4e12-9788-9e674ea581f9" />
+<img width="1470" height="956" alt="Screenshot 2025-08-17 at 7 52 58 AM" src="https://github.com/user-attachments/assets/656b419a-c6a5-48ee-a650-98fa48bdf342" />
+<img width="1470" height="956" alt="Screenshot 2025-08-17 at 7 53 32 AM" src="https://github.com/user-attachments/assets/f7a2ccca-fcce-4003-8f06-49366f209bf5" />
+
+
 
 ## 📝 Project Structure
 
@@ -118,4 +125,4 @@ The application will be accessible at `http://localhost:8000`.
 
 ### **Author**
 
-*This section can be filled out with your name or GitHub username.*
+*Srikurmadasu Praneeth.*
