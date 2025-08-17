@@ -1,5 +1,3 @@
------
-
 # 🤖 AI Meeting Summarizer
 
 This is a full-stack web application that leverages a large language model to summarize meeting transcripts and share the results via email. It's built with a simple, functional design, focusing on core features: summarizing, editing, and sharing.
