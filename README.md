@@ -1,73 +1,121 @@
-# AI Meeting Summarizer (Full-Stack Application)
+-----
 
-This project is a full-stack **AI-powered meeting notes summarizer and sharer**.  
-It allows users to paste or upload a transcript, generate a clean AI summary, edit it, and finally email the summary to multiple recipients.
+# 🤖 AI Meeting Summarizer
 
----
+This is a full-stack web application that leverages a large language model to summarize meeting transcripts and share the results via email. It's built with a simple, functional design, focusing on core features: summarizing, editing, and sharing.
 
-## ✨ Why I Chose These Tools
+## ✨ Features
 
-- **Node.js + Express (Backend)**  
-  Simple, lightweight, and perfect for serving a couple of JSON APIs (`/api/summarize` and `/api/email`).
+  - **Summarize Transcripts**: Upload a `.txt` file or paste raw text from meeting notes or call transcripts.
+  - **Custom AI Instructions**: Guide the AI's output with a custom prompt, such as "Highlight action items" or "Summarize for executives in bullet points."
+  - **Editable Summaries**: The generated summary is fully editable.
+  - **Email Sharing**: Send the final, edited summary to one or more recipients directly from the application.
+  - **Flexible AI Backend**: Easily switch between **Groq** (default) and **OpenAI** by changing an environment variable.
+  - **Markdown Rendering**: The AI-generated summaries are automatically formatted with headings, lists, and bold text for easy readability.
 
-- **Groq API (default AI)**  
-  I used Groq because it’s extremely fast and cost-efficient. The app is switchable to OpenAI just by flipping `USE_GROQ` in `.env`.
+## ⚙️ Tech Stack
 
-- **Marked.js (Frontend)**  
-  AI often returns in **Markdown** (bullet points, headings, lists). Raw text looked ugly.  
-  → Marked converts Markdown into **formatted HTML**, so summaries look clear and easy to skim.
+### **Backend**
 
-- **Nodemailer (Backend)**  
-  Used for sending emails. I added Markdown → HTML conversion before sending, so recipients see proper formatting in their inbox.
+  - **Node.js**: The runtime environment for the server.
+  - **Express.js**: A minimalist web framework used to build the REST API.
+  - **Groq SDK** or **Node-fetch**: For making API calls to the chosen LLM.
+  - **Nodemailer**: Handles sending emails via an SMTP service.
+  - **dotenv**: Manages environment variables for secure API keys and credentials.
+  - **marked**: A Markdown parser to convert the AI's response into HTML.
 
-- **Bootstrap 5**  
-  I know React, but the project specifically asked to keep design **basic** and focus on **functionality**. I used plain HTML + Bootstrap to keep it clean, responsive, and not visually cluttered.
+### **Frontend**
 
-- **dotenv**  
-  For safe environment variable management (API keys, SMTP credentials).
-
----
-
-## ⚙️ How It Works (Step by Step)
-
-1. **Transcript Input**
-
-   - Paste transcript **or upload a `.txt` file**.
-   - Add an optional instruction (e.g., “Summarize in bullet points for executives”).
-
-2. **Generate Summary** (AI call)
-
-   - App sends transcript + instruction → Groq/OpenAI → gets back neatly formatted Markdown summary.
-   - Markdown is converted to HTML using **Marked.js**.
-
-3. **Edit Summary**
-
-   - Switch to edit mode, tweak text if needed.
-   - Save to get nicely formatted version back.
-
-4. **Share via Email**
-   - Enter one or multiple recipients.
-   - Email is sent using **Nodemailer**.
-   - Both **plain text + HTML** versions are included so it looks correct across email clients.
-
----
-
-## 💻 Tech Stack
-
-- **Backend** → Node.js + Express.js
-- **Frontend** → HTML, CSS, Bootstrap, Markdown rendering with Marked.js
-- **AI Integration** → Groq API (`llama3`) or OpenAI (`gpt-4o-mini`)
-- **Email** → Nodemailer over SMTP (Brevo used in my case)
-- **Dev Tools** → dotenv, nodemon
-
----
+  - **HTML5 & CSS3**: The basic structure and styling of the user interface.
+  - **Bootstrap 5**: Provides a clean, responsive, and functional layout without extensive custom CSS.
+  - **JavaScript (Vanilla)**: Handles all client-side logic, including API calls and DOM manipulation.
 
 ## 🚀 Getting Started
 
+Follow these steps to set up and run the application locally.
+
 ### Prerequisites
 
-- Node.js (>= 18)
-- API key (Groq or OpenAI)
-- SMTP credentials (Brevo, Gmail, SendGrid, etc.)
+  - **Node.js**: Ensure you have a recent version installed (Node.js 18 or higher is recommended).
+  - **API Key**: You'll need an API key from either [Groq](https://console.groq.com/keys) or [OpenAI](https://platform.openai.com/api-keys).
+  - **SMTP Credentials**: To enable the email feature, you'll need SMTP credentials from a provider like Brevo (Sendinblue), Gmail, Mailgun, etc.
 
 ### Installation
+
+1.  **Clone the repository:**
+
+    ```bash
+    git clone https://github.com/your-username/ai-meeting-summarizer.git
+    cd ai-meeting-summarizer
+    ```
+
+2.  **Install the dependencies:**
+
+    ```bash
+    npm install
+    ```
+
+### Configuration
+
+1.  **Create a `.env` file** in the root directory.
+
+    ```bash
+    touch .env
+    ```
+
+2.  **Add the following variables** to your `.env` file, replacing the placeholder values with your actual credentials.
+
+    ```
+    # To use Groq (Recommended for speed)
+    USE_GROQ=1
+    GROQ_API_KEY="your_groq_api_key_here"
+    GROQ_MODEL="llama3-8b-8192"
+
+    # To use OpenAI instead, comment out the Groq variables above and uncomment these
+    # USE_GROQ=0
+    # OPENAI_API_KEY="your_openai_api_key_here"
+    # OPENAI_MODEL="gpt-4o-mini"
+
+    # SMTP Credentials for Email Sharing
+    # Example using Brevo (Sendinblue)
+    SMTP_HOST="smtp-relay.brevo.com"
+    SMTP_PORT=587
+    SMTP_USER="your-brevo-username"
+    SMTP_PASS="your-brevo-api-key"
+    SMTP_FROM="your-verified-sender-email@example.com"
+    ```
+
+### Running the Application
+
+  - **Development Mode**: Uses `nodemon` to automatically restart the server on file changes.
+
+    ```bash
+    npm run dev
+    ```
+
+  - **Production Mode**: Starts the server normally.
+
+    ```bash
+    npm start
+    ```
+
+The application will be accessible at `http://localhost:8000`.
+
+## 📸 Screenshots
+
+## 📝 Project Structure
+
+  - `api/`: Contains the backend Node.js and Express server logic.
+      - `index.js`: The main server file.
+  - `public/`: Holds all static frontend files.
+      - `index.html`: The main user interface.
+      - Other assets like CSS and JavaScript files (if any).
+  - `.env`: Your environment variables (should be kept private).
+  - `package.json`: Lists all project dependencies and scripts.
+  - `README.md`: This documentation file.
+
+-----
+
+### **Author**
+
+*This section can be filled out with your name or GitHub username.*
