@@ -1,17 +1,3 @@
-/**
- * AI Meeting Summarizer - Node.js + Express Backend
- *
- * This server provides two core API endpoints:
- * 1. POST /api/summarize: Takes a text transcript and an optional user instruction.
- * It sends this data to a configured AI model (either Groq or OpenAI) to generate
- * a concise, structured summary.
- * 2. POST /api/email: Takes a list of recipients, a subject, and a body.
- * It uses the Nodemailer library to send an email with the generated summary.
- *
- * The server is configured to be flexible by supporting both Groq and OpenAI
- * via environment variables. It also handles basic error checking and UI state
- * for a smooth user experience.
- */
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -20,11 +6,10 @@ import nodemailer from "nodemailer";
 import { marked } from "marked";
 
 dotenv.config();
-const app = express();
 
+const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(express.static("public"));
 
 // --- AI Config ---
 const USE_GROQ = process.env.USE_GROQ === "1";
@@ -121,7 +106,8 @@ app.post("/api/email", async (req, res) => {
   }
 });
 
-app.get("/", (req, res) => res.sendFile("index.html", { root: "public" }));
-
-const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// The Vercel handler
+export default (req, res) => {
+  req.url = req.url.replace(/^\/api\//, "/"); // a rewrite to handle Vercel's path structure
+  app(req, res);
+};
