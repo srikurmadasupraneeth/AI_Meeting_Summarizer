@@ -97,7 +97,7 @@ Follow these steps to set up and run the application locally.
     npm start
     ```
 
-The application will be accessible at `http://localhost:8000`.
+The application will be accessible at `https://ai-meeting-summarizer-puzi.onrender.com/`.
 
 ## 📸 Screenshots
 <img width="1470" height="956" alt="Screenshot 2025-08-17 at 7 52 23 AM" src="https://github.com/user-attachments/assets/a299368b-b1c4-4249-99cf-4de45534f2cf" />
